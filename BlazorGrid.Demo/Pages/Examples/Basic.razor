@@ -5,35 +5,18 @@
 <p>This example shows what the grid looks like with the minimum amount of configuration.</p>
 <p>For the purpose of this demo, all of the data is pulled from a static JSON file. Paging is handled by a custom provider which I wrote just for this demo.</p>
 <p>The captions of the columns are based on the <code>DisplayAttributes</code> of the <code>Employee</code> (row) class.</p>
-<Tabs>
-    <Tab Caption="Result" class="p-3">
+
+  
+      
         <BlazorGrid TRow="Employee" Provider="Provider.GetAsync<Employee>" style="max-height: 340px;">
-            <StaticGridCol FitToContent="true">
-                <img src="@context.Avatar" style="width: 20px; height: 20px;" />
-            </StaticGridCol>
-            <GridCol For="() => context.Id" FitToContent="true" />
-            <GridCol For="() => context.FirstName" />
-            <GridCol For="() => context.LastName" />
+            <GridCol For="() => context.Id" scope="row"/>
+            <GridCol For="() => context.FirstName"/>
+            <GridCol For="() => context.LastName"/>
             <GridCol For="() => context.Email">
                 <a href="mailto:@context.Email">@context.Email</a>
             </GridCol>
         </BlazorGrid>
-    </Tab>
-    <Tab Caption="Code" class="p-3">
-        <h6>Razor</h6>
-        <pre class="pre-scrollable"><code>&lt;BlazorGrid TRow=&quot;Employee&quot; Provider=&quot;Provider.GetAsync&lt;Employee&gt;&gt;
-    &lt;StaticGridCol FitToContent=&quot;true&quot;&gt;
-        &lt;img src=&quot;@@context.Avatar&quot; style=&quot;width: 20px; height: 20px;&quot; /&gt;
-    &lt;/StaticGridCol&gt;
-    &lt;GridCol For=&quot;() => context.Id&quot; FitToContent=&quot;true&quot; /&gt;
-    &lt;GridCol For=&quot;() => context.FirstName&quot; /&gt;
-    &lt;GridCol For=&quot;() => context.LastName&quot; /&gt;
-    &lt;GridCol For=&quot;() => context.Email&quot;&gt;
-        &lt;a href=&quot;mailto:@@context.Email&quot;&gt;@@context.Email&lt;/a&gt;
-    &lt;/GridCol&gt;
-&lt;/BlazorGrid&gt;</code></pre>
-    </Tab>
-</Tabs>
+
 @code
 {
     protected override string Title => "Basic grid";

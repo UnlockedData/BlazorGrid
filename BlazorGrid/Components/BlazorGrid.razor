@@ -8,130 +8,88 @@
 }
 @if (Columns.Any())
 {
-    <div @attributes="FinalAttributes">
-        @if (ShowLoadingOverlay == true)
-        {
-            <div class="grid-overlay">
-                <div class="@Config.Styles.PlaceholderWrapperClass">
-                    <div class="@Config.Styles.LoadingSpinnerOuterClass">
-                        <div class="@Config.Styles.LoadingSpinnerInnerClass"></div>
-                    </div>
-                    <div class="@Config.Styles.LoadingTextClass">@Resources.Loading_Text</div>
-                </div>
-            </div>
-        }
-        else if (LoadingError != null)
-        {
-            <div class="grid-overlay">
-                <div class="@Config.Styles.PlaceholderWrapperClass">
-                    <div class="@Config.Styles.ErrorHeadingClass">
-                        <h2>@Resources.LoadingError_Title</h2>
-                    </div>
-                    <div class="@Config.Styles.ErrorSubHeadingClass">@Resources.LoadingError_Text</div>
-                    <small class="@Config.Styles.ErrorTextClass">@LoadingError.Message</small>
-                    @if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        <code style="line-break: auto">@LoadingError.StackTrace</code>
-                    }
-                    <div class="@Config.Styles.ErrorFooterClass">
-                        <button class="@Config.Styles.ErrorFooterBtnClass" @onclick="ReloadAsync">@Resources.LoadingError_ReloadBtnText</button>
-                    </div>
-                </div>
-            </div>
-        }
-        <div class="blazor-grid">
-            <div class="grid-scrollview" style="grid-template-columns: @GridTemplateColumns();">
-                <header class="grid-row grid-header">
-                    @foreach (var col in Columns)
-                    {
-                        var isSorted = IsSortedBy(col);
-                        var sortable = col.For != null;
-                        var cls = col.CssClass;
+    <form>
+        <div class="table-responsive blazor-grid" style="max-height: @ViewPortHeight">
+        <table class="table" style="overflow-y: auto; max-height: inherit; min-height: inherit;">
+            <thead class="sticky-top" style="background-color: white;">
+            <tr>
+                @foreach (var col in Columns)
+                {
+                    var isSorted = IsSortedBy(col);
+                    var sortable = col.For != null;
+                    var cls = col.CssClass;
 
-                        if (sortable)
+                    if (sortable)
+                    {
+                        cls += " sortable";
+
+                        if (isSorted)
                         {
-                            cls += " sortable";
-
-                            if (isSorted)
-                            {
-                                cls += " sorted";
-                            }
+                            cls += " sorted";
                         }
-                        <div @onclick="() => TryApplySortingAsync(col)" class="@cls">
-                            @if (!col.AlignRight)
-                            {
-                                @col.GetCaptionOrDefault()
-                            }
-                            @if (sortable)
-                            {
-                                <span class="@ColHeaderSortIconCssClass(col)"></span>
-                            }
-                            @if (col.AlignRight)
-                            {
-                                @col.GetCaptionOrDefault()
-                            }
-                        </div>
                     }
-                </header>
-                @if (TotalRowCount == 0 || Provider is null)
-                {
-                    <div class="grid-row-span-all">
-                        <div class="@Config.Styles.PlaceholderWrapperClass">
-                            <h5 class="@Config.Styles.NoDataHeadingClass">@Resources.Empty_Title</h5>
-                            @if (string.IsNullOrEmpty(Query))
-                            {
-                                <p class="@Config.Styles.NoDataTextClass">@Resources.Empty_Text</p>
-                            }
-                            else
-                            {
-                                <p class="@Config.Styles.NoDataTextClass">@Resources.Empty_Text_Filtered</p>
-                            }
-                        </div>
-                    </div>
+                    <th scope="col" @onclick="() => TryApplySortingAsync(col)" class="@cls">
+                        @if (!col.AlignRight)
+                        {
+                            @col.GetCaptionOrDefault()
+                        }
+                        @if (sortable)
+                        {
+                            <span class="@ColHeaderSortIconCssClass(col)"></span>
+                        }
+                        @if (col.AlignRight)
+                        {
+                            @col.GetCaptionOrDefault()
+                        }
+                    </th>
                 }
-                else
-                {
-                    <Virtualize ItemsProvider="GetItemsVirtualized" @ref="VirtualizeRef" ItemSize="VirtualItemSize">
-                        <Placeholder>
-                            <div class="grid-row grid-row-placeholder" aria-label="@Resources.Loading_Text">
-                                @foreach (var col in Columns)
-                                {
-                                    <div>
-                                        <div class="grid-cell-placeholder">&#8203;<span></span></div>
-                                    </div>
-                                }
-                            </div>
-                        </Placeholder>
-                        <ItemContent>
-                            @{
-                                var cls = "grid-row";
+            </tr>
+            </thead>
+            @if (TotalRowCount == 0 || Provider is null)
+            {
 
-                                if (OnClick.HasDelegate || Href != null)
-                                {
-                                    cls += " " + Config.Styles.RowClickableClass;
-                                }
-
-                                if(HighlightedRowIndex == context.Index)
-                                {
-                                    cls += " " + Config.Styles.RowHighlightedClass;
-                                }
-                            }
-                            <div class="@cls"
-                                 @onclick="_ => OnRowClicked(context)">
-                                @ChildContent(context.Row)
-                            </div>
-                        </ItemContent>
-                    </Virtualize>
-                    @if (TotalRowCount.HasValue)
+                <div class="@Config.Styles.PlaceholderWrapperClass">
+                    <h5 class="@Config.Styles.NoDataHeadingClass">@Resources.Empty_Title</h5>
+                    @if (string.IsNullOrEmpty(Query))
                     {
-                        <footer class="grid-row-span-all">
-                            <div class="@Config.Styles.FooterWrapperClass">
-                                <div class="@Config.Styles.FooterTextClass">@string.Format(Resources.Footer_RowCount, TotalRowCount ?? 0)</div>
-                            </div>
-                        </footer>
+                        <p class="@Config.Styles.NoDataTextClass">@Resources.Empty_Text</p>
                     }
-                }
-            </div>
+                    else
+                    {
+                        <p class="@Config.Styles.NoDataTextClass">@Resources.Empty_Text_Filtered</p>
+                    }
+                </div>
+
+            }
+            else
+            {
+                <tbody>
+                <Virtualize @ref="VirtualizeRef" ItemsProvider="GetItemsVirtualized" >
+                    @{
+                        var cls = "grid-row";
+
+                        if (OnClick.HasDelegate || Href != null)
+                        {
+                            cls += " " + Config.Styles.RowClickableClass;
+                        }
+
+                        if (HighlightedRowIndex == context.Index)
+                        {
+                            cls += " " + Config.Styles.RowHighlightedClass;
+                        }
+                    }
+                    <tr class="@cls"
+                        @onclick="_ => OnRowClicked(context)">
+
+                        @ChildContent(context.Row)
+                    </tr>
+
+                </Virtualize>
+                </tbody>
+
+            }
+        </table>
         </div>
-    </div>
+    </form>
+
 }

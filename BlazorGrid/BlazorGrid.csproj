@@ -1,19 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<RazorLangVersion>3.0</RazorLangVersion>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>Akinzekeel.BlazorGrid</PackageId>
-		<Version>1.0.9-preview2</Version>
-		<Preview></Preview>
-		<Authors>Majid Iqbal</Authors>
-		<Company />
+		<TargetFramework>net7.0</TargetFramework>
+		
 		<Description>A light weight data grid component for Blazor, focused on remote data. Supports sorting, virtualization, row-highlighting, JSON, gRPC and custom providers.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://blazorgrid.majidcodes.net/</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/Akinzekeel/BlazorGrid</RepositoryUrl>
-		<PackageReleaseNotes></PackageReleaseNotes>
+		<RepositoryUrl>https://github.com/Akinzekeel/BlazorGrid</RepositoryUrl>		
 		<PackageTags>Blazor, data grid</PackageTags>
 	</PropertyGroup>
 
@@ -22,9 +15,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
-		<PackageReference Include="LibSassBuilder" Version="2.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+		<PackageReference Include="LibSassBuilder" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' != 'Release'">

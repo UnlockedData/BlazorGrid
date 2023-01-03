@@ -3,7 +3,7 @@
 @inherits ColBase
 @if (Register == null)
 {
-    <div @attributes="FinalAttributes">
+    <td @attributes="FinalAttributes">
         @if (ChildContent == null)
         {
             @GetAutoValue()
@@ -12,5 +12,5 @@
         {
             @ChildContent
         }
-    </div>
+    </td>
 }

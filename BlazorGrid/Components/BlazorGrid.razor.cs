@@ -30,7 +30,7 @@ namespace BlazorGrid.Components
         [Inject] private NavigationManager Nav { get; set; }
 
         [Parameter] public ProviderDelegate<TRow> Provider { get; set; }
-        [Parameter] public float VirtualItemSize { get; set; } = 50;
+        [Parameter] public float VirtualItemSize { get; set; } = 25;
         [Parameter] public RenderFragment<TRow> ChildContent { get; set; }
         [Parameter] public TRow EmptyRow { get; set; }
         [Parameter] public string Query { get; set; }
@@ -39,6 +39,9 @@ namespace BlazorGrid.Components
         [Parameter] public Func<TRow, string> Href { get; set; }
         [Parameter] public Expression<Func<TRow, object>> DefaultOrderBy { get; set; }
         [Parameter] public bool DefaultOrderByDescending { get; set; }
+        
+        [Parameter] public bool Responsive { get; set; }
+        [Parameter] public string ViewPortHeight { get; set; } = "300px";
         [Parameter] public bool RowHighlighting { get; set; }
         [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object> Attributes { get; set; }
 
@@ -73,6 +76,8 @@ namespace BlazorGrid.Components
                         Offset = request.StartIndex,
                         Length = request.Count
                     };
+                    
+                    
 
                     var result = await Provider(providerRequest, request.CancellationToken);
 
@@ -188,6 +193,8 @@ namespace BlazorGrid.Components
                 return string.Join(' ', cls).Trim();
             }
         }
+        
+        
 
         protected override void OnAfterRender(bool firstRender)
         {
